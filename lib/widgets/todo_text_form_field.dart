@@ -27,7 +27,6 @@ class _TodoTextFormFieldState extends State<TodoTextFormField> {
           )
         : TextFormField(
             textInputAction: TextInputAction.done,
-            autofocus: true,
             focusNode: widget.textFieldFocusNode,
             key: widget.key,
             initialValue: '',

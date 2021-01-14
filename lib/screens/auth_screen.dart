@@ -6,6 +6,10 @@ import 'package:todo_app/models/http_exception.dart';
 import 'package:todo_app/providers/auth.dart';
 import 'package:todo_app/utils/app_constants.dart';
 
+/// This enum is to define the auth mode for user
+///
+/// 1. Sign up mode
+/// 2. Login mode
 enum AuthMode { Signup, Login }
 
 class AuthScreen extends StatelessWidget {

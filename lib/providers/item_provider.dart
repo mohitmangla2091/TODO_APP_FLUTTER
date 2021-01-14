@@ -30,7 +30,7 @@ class TodoItem with ChangeNotifier {
 
   /// Constructor
   TodoItem({
-    @required this.id,
+    this.id = '',
     this.time = '',
     @required this.title,
     this.isCompleted = false,

@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
                 primarySwatch: primaryBlack,
                 accentColor: Colors.deepOrange,
               ),
+              initialRoute: "/",
               home: auth.isAuth
                   ? TodoListScreen()
                   : FutureBuilder(

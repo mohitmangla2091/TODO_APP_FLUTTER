@@ -20,7 +20,6 @@ class TodoListItem extends StatefulWidget {
 class _TodoListItemState extends State<TodoListItem> {
   @override
   Widget build(BuildContext context) {
-    print(widget.todoItem.isCompleted);
     return Dismissible(
       secondaryBackground: Container(
         color: Colors.black,

@@ -9,13 +9,17 @@ import 'dart:convert';
 import 'package:todo_app/utils/app_constants.dart';
 import 'package:todo_app/utils/unitily.dart';
 
+/// This class is provider of the list of todo items
+///
+/// This class contains the logic adding new todo item, deleting a todo item and getting the list of items
 class Items with ChangeNotifier {
+  /// List of todo items
   List<TodoItem> _items = [];
 
-  Items(this._items);
-
+  /// sorted list of todo items
   List<TodoItem> _sortedItems = [];
 
+  /// getter of list of todo items
   List<TodoItem> get items {
     _sortedItems = [];
     var counter = 0;
@@ -27,10 +31,15 @@ class Items with ChangeNotifier {
         _sortedItems.insert(_sortedItems.length, element);
       }
     });
+    _items = _sortedItems;
     return [..._sortedItems];
   }
 
-  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+  ///Constructor
+  Items(this._items);
+
+  /// Method to fetch the todo items from server and set it to local list
+  Future<void> fetchAndSetProducts() async {
     var url = GET_TASKS_URL;
 
     final prefs = await SharedPreferences.getInstance();
@@ -67,9 +76,6 @@ class Items with ChangeNotifier {
           isCompleted: taskData['completed'],
         ));
       });
-      loadedProducts.forEach((element) {
-        print(DateTime.parse(element.time));
-      });
       loadedProducts.sort(
           (a, b) => DateTime.parse(b.time).compareTo(DateTime.parse(a.time)));
       _items = loadedProducts;
@@ -79,12 +85,14 @@ class Items with ChangeNotifier {
     }
   }
 
+  /// Method to add new todo items on server and set it to local list
   Future<void> addItem(String title) async {
     final isInternetConnected = await Util.checkInternet();
     if (!isInternetConnected) {
       notifyListeners();
       throw Exception(INTERNET_NOT_CONNECTED);
     }
+    _items.removeAt(0);
     final url = CREATE_TASK_URL;
     try {
       final response = await http.post(
@@ -104,11 +112,11 @@ class Items with ChangeNotifier {
       _items.insert(0, newItem);
       notifyListeners();
     } catch (error) {
-      print(error);
       throw error;
     }
   }
 
+  /// Method to delete a todo items from server and remove it from local list
   Future<void> deleteItem(String id) async {
     final url = CREATE_TASK_URL + '/${id}';
     final existingProductIndex = _items.indexWhere((prod) {
@@ -137,6 +145,7 @@ class Items with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Method to set the new indexes of reordered items and set it to local list
   void reorderItems(int oldIndex, int newIndex) {
     TodoItem old = _items[oldIndex];
     if (oldIndex > newIndex) {
@@ -153,6 +162,10 @@ class Items with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Method to handle the sipe actions on dismissible widget based on direction
+  ///
+  /// On direction start to end - Item is marked as completed
+  /// On direction end to start - Item is deleted
   void doSwipeAction(DismissDirection direction, String id) async {
     final isInternetConnected = await Util.checkInternet();
     if (!isInternetConnected) {

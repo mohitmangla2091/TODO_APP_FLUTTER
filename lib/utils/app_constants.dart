@@ -55,6 +55,7 @@ const ENTER_TODO = 'Enter todo Item';
 const ITEM_ADDED = 'Item Added!';
 const ITEM_MARKED_COMPLETED = 'Item Marked Completed';
 const ITEM_DELETED = 'Item Deleted';
+const ID_1001 = '1001';
 
 //ERRORs
 const ERROR_SOMETHING_WENT_WRONG = "Something Went Wrong!";
