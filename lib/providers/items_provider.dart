@@ -92,7 +92,6 @@ class Items with ChangeNotifier {
       notifyListeners();
       throw Exception(INTERNET_NOT_CONNECTED);
     }
-    _items.removeAt(0);
     final url = CREATE_TASK_URL;
     try {
       final response = await http.post(
